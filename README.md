@@ -6,6 +6,8 @@ Conseguimos recriar uma perspectiva 3D do ambiente.
 
 Para executar, basta apenas abrir o HTML no navegador (arquivo JS deve estar no mesmo diretório).
 
+Para movimentar o player (camera), utilze as setas ou A,W,S,D do teclado.
+
 ## Customização:
 
 ### Tela
