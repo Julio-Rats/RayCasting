@@ -21,7 +21,7 @@ O player possui alguns parâmetros como:
 -FOV (medição de campo de visão), que simula qual o angulo de visão será observado para colocar na tela.
 -O X,Y é a posição inicial do player.
 -Angle é a direção da visão que o player (camera) começa.
--Speed representa qual o deslocamento do player em relação à matriz, e o angulo de visão.]
+-Speed representa qual o deslocamento do player em relação à matriz, e o angulo de visão.
 
 ### Precisão
 Pode-se melhorar a definição das paredes aumentando o valor de data.rayCasting.precision, isso ira
