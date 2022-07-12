@@ -11,7 +11,7 @@ let data = {
     },
     rayCasting: {
         incrementAngle: null,
-        precision: 256
+        precision: 100
     },
     player: {
         fov: 60,
@@ -21,7 +21,7 @@ let data = {
         angle: 90,
         speed: {
             movement: 0.5,
-            rotation: 10.0
+            rotation: 15.0
         }
     },
     map:[
@@ -31,15 +31,15 @@ let data = {
         [1, 0, 2, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 2, 3, 2, 3, 0, 0, 2],
         [2, 0, 3, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
         [1, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
-        [2, 3, 1, 0, 0, 2, 0, 0, 0, 2, 3, 2, 0, 0, 0, 0, 0, 0, 0, 1],
+        [1, 3, 1, 0, 0, 2, 0, 0, 0, 2, 3, 2, 0, 0, 0, 0, 0, 0, 0, 1],
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 2, 0, 0, 0, 2],
         [2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 2, 0, 0, 2, 1, 0, 0, 0, 1],
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 3, 1, 0, 0, 0, 0, 0, 0, 0, 2],
         [2, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-        [1, 0, 2, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
-        [2, 0, 3, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 2, 3, 2, 1, 2, 0, 1],
+        [1, 0, 3, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+        [2, 0, 2, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 2, 3, 2, 1, 2, 0, 1],
         [1, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 2, 0, 0, 2],
-        [2, 3, 1, 0, 0, 2, 0, 0, 2, 1, 3, 2, 0, 2, 0, 0, 3, 0, 3, 1],
+        [1, 1, 3, 0, 0, 2, 0, 0, 2, 1, 3, 2, 0, 2, 0, 0, 3, 0, 3, 1],
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 1, 0, 0, 2, 0, 0, 2],
         [2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 2, 3, 0, 1, 2, 0, 1],
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 3, 0, 2],
@@ -47,15 +47,19 @@ let data = {
         [2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1]
     ],
     colors : [
-            "green",
-            "red",
-            "blue"
+            "#00FF00", 
+            "#FF0000", 
+            "#0000FF" 
     ],
     key: {
-        up:   "KeyW",
-        down: "KeyS",
-        left: "KeyA",
-        right:"KeyD"
+        upKey:     "KeyW",
+        downKey:   "KeyS",
+        rightKey:  "KeyD",
+        leftKey:   "KeyA",
+        upArrow:   "ArrowUp",
+        downArrow: "ArrowDown",
+        leftArrow: "ArrowLeft",
+        rightArrow:"ArrowRight"
     }
 }
 
@@ -114,23 +118,22 @@ function main() {
 }
 
 /**
- * Raycasting algoritmo
+ * Raycasting Algoritmo
  */
 function rayCasting() {
     let rayAngle = data.player.angle - data.player.halfFov;
     for(let rayCount = 0; rayCount < data.screen.width; rayCount++) {
-        
         // Player dados
         let ray = {
             x: data.player.x,
             y: data.player.y
         }
 
-        // Numeros de linhas (ray)
+        // Direção do raio sobre o grid a partir do ponto de visão.
         let rayCos = Math.cos(degreeToRadians(rayAngle)) / data.rayCasting.precision;
         let raySin = Math.sin(degreeToRadians(rayAngle)) / data.rayCasting.precision;
-        
-        // Colisão da ray com a parede
+
+        // Colisão do raio com as paredes
         let wall = 0;
         while(wall == 0) {
             ray.x += rayCos;
@@ -170,7 +173,7 @@ function clearScreen() {
 document.addEventListener('keydown', (event) => {
     let keyCode = event.code;
 
-    if(keyCode === data.key.up) {
+    if(keyCode === data.key.upKey || keyCode === data.key.upArrow) {
         let playerCos = Math.cos(degreeToRadians(data.player.angle)) * data.player.speed.movement;
         let playerSin = Math.sin(degreeToRadians(data.player.angle)) * data.player.speed.movement;
         let newX = data.player.x + playerCos;
@@ -181,7 +184,7 @@ document.addEventListener('keydown', (event) => {
             data.player.x = newX;
             data.player.y = newY;
         }
-    } else if(keyCode === data.key.down) {
+    } else if(keyCode === data.key.downKey || keyCode === data.key.downArrow) {
         let playerCos = Math.cos(degreeToRadians(data.player.angle)) * data.player.speed.movement;
         let playerSin = Math.sin(degreeToRadians(data.player.angle)) * data.player.speed.movement;
         let newX = data.player.x - playerCos;
@@ -192,9 +195,9 @@ document.addEventListener('keydown', (event) => {
             data.player.x = newX;
             data.player.y = newY;
         }
-    } else if(keyCode === data.key.left) {
+    } else if(keyCode === data.key.leftKey || keyCode === data.key.leftArrow) {
         data.player.angle -= data.player.speed.rotation;
-    } else if(keyCode === data.key.right) {
+    } else if(keyCode === data.key.rightKey || keyCode === data.key.rightArrow) {
         data.player.angle += data.player.speed.rotation;
     } 
 });
