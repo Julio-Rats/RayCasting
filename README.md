@@ -6,7 +6,7 @@ Conseguimos recriar uma perspectiva 3D do ambiente.
 
 Para executar, basta apenas abrir o HTML no navegador (arquivo JS deve estar no mesmo diretório).
 
-# Modificações:
+## Modificações:
 
 (Tela) Para mudar a resolução basta colocar a resolução que quer em data.screen.width e data.screen.height
 
