@@ -6,7 +6,8 @@ Conseguimos recriar uma perspectiva 3D do ambiente.
 
 Para executar, basta apenas abrir o HTML no navegador (arquivo JS deve estar no mesmo diretório).
 
-Para movimentar o player (camera), utilize as setas ou A,W,S,D do teclado.
+Para movimentar o player (camera) utilize as setas ou A,W,S,D do teclado, para rotacionar a 
+a visão (cima ou baixo) utilize as telcas Shitf e Control, para centralizar utilize a tecla C.
 
 ## Customização:
 

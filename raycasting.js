@@ -1,20 +1,20 @@
 // Dados
 let data = {
     screen: {
-        width: 640,
-        height: 480,
+        width: 1028,
+        height: 720,
         halfWidth: null,
         halfHeight: null
     },
     render: {
-        delay: 25
+        delay: 20
     },
     rayCasting: {
         incrementAngle: null,
-        precision: 100
+        precision: 500
     },
     player: {
-        fov: 60,
+        fov: 50,
         halfFov: null,
         x: 7,
         y: 2,
@@ -56,10 +56,13 @@ let data = {
         downKey:   "KeyS",
         rightKey:  "KeyD",
         leftKey:   "KeyA",
-        upArrow:   "ArrowUp",
+        upArrow:   "ArrowUp"  ,
         downArrow: "ArrowDown",
         leftArrow: "ArrowLeft",
-        rightArrow:"ArrowRight"
+        rightArrow:"ArrowRight",
+        lookUp:    "ShiftLeft" ,
+        lookDown:  "ControlLeft",
+        lookCenter:"KeyC"
     }
 }
 
@@ -70,8 +73,8 @@ data.rayCasting.incrementAngle = data.player.fov / data.screen.width;
 data.player.halfFov = data.player.fov / 2;
 
 // Canvas
-const screen = document.createElement('canvas');
-screen.width = data.screen.width;
+const screen  = document.createElement('canvas');
+screen.width  = data.screen.width;
 screen.height = data.screen.height;
 screen.style.border = "1px solid black";
 document.body.appendChild(screen);
@@ -122,7 +125,7 @@ function main() {
  */
 function rayCasting() {
     let rayAngle = data.player.angle - data.player.halfFov;
-    for(let rayCount = 0; rayCount < data.screen.width; rayCount++) {
+    for (let rayCount = 0; rayCount < data.screen.width; rayCount++) {
         // Player dados
         let ray = {
             x: data.player.x,
@@ -135,7 +138,7 @@ function rayCasting() {
 
         // Colisão do raio com as paredes
         let wall = 0;
-        while(wall == 0) {
+        while (wall == 0) {
             ray.x += rayCos;
             ray.y += raySin;
             wall = data.map[Math.floor(ray.y)][Math.floor(ray.x)];
@@ -149,6 +152,9 @@ function rayCasting() {
 
         // Altura da parede
         let wallHeight = Math.floor(data.screen.halfHeight / distance);
+        if (wallHeight > data.screen.halfHeight){
+            wallHeight = data.screen.halfHeight
+        }
 
         // Desenhando as paredes
         drawLine(rayCount, 0, rayCount, data.screen.halfHeight - wallHeight, "cyan");
@@ -195,9 +201,16 @@ document.addEventListener('keydown', (event) => {
             data.player.x = newX;
             data.player.y = newY;
         }
+    // Rotação vertical do player
     } else if(keyCode === data.key.leftKey || keyCode === data.key.leftArrow) {
         data.player.angle -= data.player.speed.rotation;
     } else if(keyCode === data.key.rightKey || keyCode === data.key.rightArrow) {
         data.player.angle += data.player.speed.rotation;
-    } 
+    }else if(keyCode == data.key.lookUp){
+        data.screen.halfHeight += data.player.speed.rotation;
+    }else if(keyCode == data.key.lookDown){
+        data.screen.halfHeight -= data.player.speed.rotation;
+    }else if(keyCode == data.key.lookCenter){
+        data.screen.halfHeight = data.screen.height/2;
+    }
 });
